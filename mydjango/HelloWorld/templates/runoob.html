@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/static/plugins/bootstrap-3.3.7/dist/css/bootstrap.css">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p>{{views_str|safe}}</p>
+    <h1>
+        {{views_str|safe}}
+    </h1>
+    <h1>
+        {% for i in views_for.items%}
+        {{ i }}
+        {% endfor %}
+<!--        {% load static %}  如果需要引用静态文件则开启-->
+<!--        {{name}}<img src="{% static "images/runoob-logo.png" %}" alt="runoob-logo">-->
+    </h1>
+</body>
+</html>
