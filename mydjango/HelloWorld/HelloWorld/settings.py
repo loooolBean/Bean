@@ -75,17 +75,26 @@ WSGI_APPLICATION = 'HelloWorld.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'djangotest',
+    #     'USER': 'root',
+    #     'PASSWORD': '0611',
+    #     'HOST': 'localhost',
+    #     'PORT': '3306',
+    # },
+    # 'default1': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'djangodb',
+    #     'USER': 'root',
+    #     'PASSWORD': '0611',
+    #     'HOST': 'localhost',
+    #     'PORT': '3306',
+    #
+    # },
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'djangotest',
-        'USER': 'root',
-        'PASSWORD': '0611',
-        'HOST': 'localhost',
-        'PORT': '3306',
-    },
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'djangodb',
+        'NAME': 'llb',
         'USER': 'root',
         'PASSWORD': '0611',
         'HOST': 'localhost',
