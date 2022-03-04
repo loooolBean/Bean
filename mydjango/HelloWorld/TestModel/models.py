@@ -68,3 +68,5 @@ class AuthorDetail(models.Model):
     tel = models.CharField(max_length=32)
     addr = models.CharField(max_length=64)
     birthday = models.DateField()
+
+

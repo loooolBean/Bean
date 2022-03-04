@@ -1,6 +1,9 @@
 from django.http import HttpResponse
 from django.shortcuts import render, HttpResponse
 from TestModel import models
+from TestModel.My_Forms import EmpForm
+from django import forms
+from django.core.exceptions import ValidationError
 
 
 def runoob(request):
@@ -85,38 +88,38 @@ def runoob(request):
 # 参数的字段名要加引号
 # 想要字段名和数据用 values;只想要数据用values_list
 # def add_book(request):
-    # 查询所有的id字段和price字段的数据
-    # books = models.Book.objects.values('pk', 'price')
-    # print('===================')
-    # print(books[0]['price'], type(books))  # 得到的是第一条记录的price字段的数据
-    # print(books)
+# 查询所有的id字段和price字段的数据
+# books = models.Book.objects.values('pk', 'price')
+# print('===================')
+# print(books[0]['price'], type(books))  # 得到的是第一条记录的price字段的数据
+# print(books)
 
-    # 查询所有的price字段和publish字段的数据
-    # books = models.Book.objects.values_list("pk", "publish")
-    # print('============')
-    # # print(books)
-    # print(books[0][0], type(books))  # 得到的是第一条记录的price字段的数据
-    # return HttpResponse("<p>查找成功</p>")
+# 查询所有的price字段和publish字段的数据
+# books = models.Book.objects.values_list("pk", "publish")
+# print('============')
+# # print(books)
+# print(books[0][0], type(books))  # 得到的是第一条记录的price字段的数据
+# return HttpResponse("<p>查找成功</p>")
 
 # distinct() 方法用于对数据进行去重。
-    # 查询一共有多少个出版社
-    # books = models.Book.objects.values_list("price").distinct()  # 对模型类的对象去重没有意义，因为每个对象都是一个不一样的存在。
-    # books = models.Book.objects.distinct()
-    # print(books)
-    # return HttpResponse("<p>查找成功！</p>")
+# 查询一共有多少个出版社
+# books = models.Book.objects.values_list("price").distinct()  # 对模型类的对象去重没有意义，因为每个对象都是一个不一样的存在。
+# books = models.Book.objects.distinct()
+# print(books)
+# return HttpResponse("<p>查找成功！</p>")
 
 # filter() 方法基于双下划线的模糊查询（exclude 同理）。
 # 注意：filter 中运算符号只能使用等于号 = ，不能使用大于号 > ，小于号 < ，等等其他符号。
 # __in 用于读取区间，= 号后面为列表 。
-    # 查询价格为200或者300的数据
-    # books = models.Book.objects.filter(price__in=[200, 300])
-    # print(books)
-    # __gt查询价格大于200的数据;__gte 大于等于，= 号后面为数字;__lt 小于;__lte;
-    # __range 在 ... 之间，左闭右闭区间，= 号后面为两个元素的列表。
-    # __contains 包含，= 号后面为字符串;__icontains 不区分大小写的包含，= 号后面为字符串;
-    # __startswith 以指定字符开头，= 号后面为字符串;__endswith 以指定字符结尾，= 号后面为字符串
-    # books = models.Book.objects.filter(price__gt=200)
-    # return HttpResponse("<p>查找成功！</p>")
+# 查询价格为200或者300的数据
+# books = models.Book.objects.filter(price__in=[200, 300])
+# print(books)
+# __gt查询价格大于200的数据;__gte 大于等于，= 号后面为数字;__lt 小于;__lte;
+# __range 在 ... 之间，左闭右闭区间，= 号后面为两个元素的列表。
+# __contains 包含，= 号后面为字符串;__icontains 不区分大小写的包含，= 号后面为字符串;
+# __startswith 以指定字符开头，= 号后面为字符串;__endswith 以指定字符结尾，= 号后面为字符串
+# books = models.Book.objects.filter(price__gt=200)
+# return HttpResponse("<p>查找成功！</p>")
 
 # ========================================
 # 删除
@@ -159,12 +162,12 @@ def runoob(request):
 # 一对多(外键 ForeignKey)
 # 方式一: 传对象的形式，返回值的数据类型是对象，书籍对象。
 # def add_book(request):
-    #  获取出版社对象
-    # pub_obj = models.Publish.objects.filter(pk=1).first()
-    #  给书籍的出版社属性publish传出版社对象
-    # book = models.Book.objects.create(title="菜鸟教程", price=200, pub_date="2010-10-10", publish=pub_obj)
-    # print(book, type(book))
-    # return HttpResponse(book)
+#  获取出版社对象
+# pub_obj = models.Publish.objects.filter(pk=1).first()
+#  给书籍的出版社属性publish传出版社对象
+# book = models.Book.objects.create(title="菜鸟教程", price=200, pub_date="2010-10-10", publish=pub_obj)
+# print(book, type(book))
+# return HttpResponse(book)
 
 # 方式二: 传对象 id 的形式(由于传过来的数据一般是 id,所以传对象 id 是常用的)。
 # 一对多中，设置外键属性的类(多的表)中，MySQL 中显示的字段名是:外键属性名_id。
@@ -180,16 +183,130 @@ def runoob(request):
 
 # 多对多：在第三张表上关联数据
 # 方式一：传对象形式，无返回值
-def add_book(request):
-    # chong = models.Author.objects.filter(name='令狐冲').first()
-    # ying = models.Author.objects.filter(name='任盈盈').first()
-    # book = models.Book.objects.filter(title='菜鸟教程').first()
-    # book.authors.add(chong, ying)  # 给书籍对象的 authors 属性用 add 方法传作者对象
-    # return HttpResponse(book)
+# def add_book(request):
+# chong = models.Author.objects.filter(name='令狐冲').first()
+# ying = models.Author.objects.filter(name='任盈盈').first()
+# book = models.Book.objects.filter(title='菜鸟教程').first()
+# book.authors.add(chong, ying)  # 给书籍对象的 authors 属性用 add 方法传作者对象
+# return HttpResponse(book)
 
 # 方式二：传对象id形式，无返回值
-    chong = models.Author.objects.filter(name='令狐冲').first()
-    pk = chong.pk
-    book = models.Book.objects.filter(title='冲灵剑法').first()
-    book.authors.add(pk)
+# chong = models.Author.objects.filter(name='令狐冲').first()
+# pk = chong.pk
+# book = models.Book.objects.filter(title='冲灵剑法').first()
+# book.authors.add(pk)
+# return HttpResponse('ok')
+
+# 关联管理器(对象调用)
+# 前提：多对多（双向均有关联管理器）;一对多(只有多的那个类的对象有关联管理器，即反向才有)
+# 语法格式：
+# 正向：属性名
+# 反向：小写类名加 _set
+# add()：用于多对多，把指定的模型对象添加到关联对象集（关系表）中。
+# 注意：add() 在一对多(即外键)中，只能传对象（ *QuerySet数据类型），不能传 id（*[id表]）。
+# *[ ] 的使用:
+
+# def add_book(request):
+#     book_obj = models.Book.objects.get(pk=3)
+#     author_list = models.Author.objects.filter(id__gt=1)
+#     book_obj.authors.add(*author_list) #  将id大于2的作者对象添加到这本书的坐着集合中
+#     # 方式二：传对象 id
+#     book_obj.authors.add(*[1, 3])  # 将 id=1 和 id=3 的作者对象添加到这本书的作者集合中
+#     return HttpResponse('ok')
+
+# create()：创建一个新的对象，并同时将它添加到关联对象集之中。
+# remove()：从关联对象集中移除执行的模型对象。
+# clear()：从关联对象集中移除一切对象，删除关联，不会删除对象。
+
+# ===================================
+# 跨表查询（ORM查询）
+# ====================================
+# 一对多
+# 查询主键为3的书籍的出版社所在的城市(正向)
+# def add_book(request):
+    # book = models.Book.objects.filter(pk=3).first()
+    # res = book.publish.city
+    # print(res, type(res))
+    # 查询明教出版社的书籍名（反向）
+    # 反向：对象.小写类名_set() 可以跳转到关联的表（书籍表）
+    # pub.book_set.all():取出书籍表中的所有书籍对象，在一个QuerySet里，遍历取出一个个书籍对象。
+    #     pub=models.Publish.objects.filter(name='华山出版社').first()
+    #     res = pub.book_set.all()
+    #     for i in res:
+    #         print(i.title)
+
+    # 一对一
+    # 正向：查询令狐冲的电话
+    # author = models.Author.objects.filter(name='令狐冲').first()
+    # res = author.au_detail.tel
+    # print(res,type(res))
+
+    # 查询所有住址在黑木崖的作者的姓名。
+    # # 反向：一对一的反向，用 对象.小写类名 即可，不用加 _set。
+    # addr = models.AuthorDetail.objects.filter(addr='黑木崖').first()
+    # res = addr.author.name
+    # print(res, type(res))
+    # return HttpResponse('ok')
+
+# 多对多
+    # 正向:对象.属性(book.authors)可以跳转到关联的表(作者表)。
+    # book = models.Book.objects.filter(title='菜鸟教程').first()
+    # res = book.authors.all()
+    # for i in res:
+    #     print(i.name, i.au_detail.tel)
+    #
+    # # 反向：查询任我行出过的所有书籍的名字。
+    # author = models.Author.objects.filter(name='任我行').first()
+    # res = author.book_set.all()
+    # for i in res:
+    #     print(i.title)
+    # return HttpResponse('ok')
+
+# =============================================================
+# 基于双下划线的跨表查询
+# =============================================================
+# 正向：属性名称__跨表的属性名称
+# 反向：小写类名__跨表的属性名称
+# 一对多：查询菜鸟出版社出版过的所有书籍的名字与价格
+
+def add_book(request):
+    # res1 = models.Book.objects.filter(publish__name="华山出版社").values_list('title', 'price')
+    # res2 = models.Publish.objects.filter(name='华山出版社').values_list('book__title', 'book__price')
+    # print(res1, type(res1), res2, type(res2))
+
+# 多对多：查询任我行出版过的所有图书
+# 正向：通过 属性名称__跨表的属性名称（authors__name）跨表获取数据
+#     res = models.Book.objects.filter(authors__name="任我行").values_list('tittle')
+# 反向：通过 小写类名__跨表的属性名称（book__tittle）跨表获取数据
+#     res = models.Author.objects.filter(name="任我行").values_list("book__title")
+
+# 一对一：查询任我行的手机号
+# 正向：通过 属性名称__跨表的属性名称（au_detail_tell）跨表获取数据。
+    res1 = models.Author.objects.filter(name='任我行').values_list("au_detail__tel")
+# 反向：通过小写类名__跨表的属性名称（author__name）跨表获取数据
+    res2 = models.AuthorDetail.objects.filter(author__name="任我行").values_list("tel")
+    print(res1, res2)
     return HttpResponse('ok')
+
+def add_emp(request):
+    if request.method == "GET":
+        form = EmpForm()
+        return render(request, "add_emp.html", {"form": form})
+    else:
+        form = EmpForm(request.POST)
+        if form.is_valid():  # 进行数据校验
+            # 校验成功
+            data = form.cleaned_data  # 校验成功的值，会放在cleaned_data里。
+            data.pop('r_salary')
+            print(data)
+
+            models.Emp.objects.create(**data)
+            return HttpResponse(
+                'ok'
+            )
+            # return render(request, "add_emp.html", {"form": form})
+        else:
+            print(form.errors)    # 打印错误信息
+            clean_errors = form.errors.get("__all__")
+            print(222, clean_errors)
+        return render(request, "add_emp.html", {"form": form, "clean_errors": clean_errors})
