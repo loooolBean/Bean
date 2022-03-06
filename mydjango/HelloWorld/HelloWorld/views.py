@@ -1,9 +1,10 @@
 from django.http import HttpResponse
 from django.shortcuts import render, HttpResponse
-from TestModel import models
-from TestModel.My_Forms import EmpForm
-from django import forms
 from django.core.exceptions import ValidationError
+from TestModel import models
+from django import forms
+
+from TestModel.models import EmpForm
 
 
 def runoob(request):
@@ -290,23 +291,22 @@ def add_book(request):
 
 def add_emp(request):
     if request.method == "GET":
-        form = EmpForm()
+        form = EmpForm()  # 初始化form对象
         return render(request, "add_emp.html", {"form": form})
     else:
-        form = EmpForm(request.POST)
+        form = EmpForm(request.POST)  #将数据传给form对象
         if form.is_valid():  # 进行数据校验
             # 校验成功
             data = form.cleaned_data  # 校验成功的值，会放在cleaned_data里。
             data.pop('r_salary')
             print(data)
-
             models.Emp.objects.create(**data)
             return HttpResponse(
                 'ok'
             )
             # return render(request, "add_emp.html", {"form": form})
-        else:
+        else:  # 校验失败
             print(form.errors)    # 打印错误信息
-            clean_errors = form.errors.get("__all__")
+            clean_errors = form.errors.get("__all__")  # 获取全局钩子错误信息
             print(222, clean_errors)
         return render(request, "add_emp.html", {"form": form, "clean_errors": clean_errors})
