@@ -225,43 +225,43 @@ def runoob(request):
 # 一对多
 # 查询主键为3的书籍的出版社所在的城市(正向)
 # def add_book(request):
-    # book = models.Book.objects.filter(pk=3).first()
-    # res = book.publish.city
-    # print(res, type(res))
-    # 查询明教出版社的书籍名（反向）
-    # 反向：对象.小写类名_set() 可以跳转到关联的表（书籍表）
-    # pub.book_set.all():取出书籍表中的所有书籍对象，在一个QuerySet里，遍历取出一个个书籍对象。
-    #     pub=models.Publish.objects.filter(name='华山出版社').first()
-    #     res = pub.book_set.all()
-    #     for i in res:
-    #         print(i.title)
+# book = models.Book.objects.filter(pk=3).first()
+# res = book.publish.city
+# print(res, type(res))
+# 查询明教出版社的书籍名（反向）
+# 反向：对象.小写类名_set() 可以跳转到关联的表（书籍表）
+# pub.book_set.all():取出书籍表中的所有书籍对象，在一个QuerySet里，遍历取出一个个书籍对象。
+#     pub=models.Publish.objects.filter(name='华山出版社').first()
+#     res = pub.book_set.all()
+#     for i in res:
+#         print(i.title)
 
-    # 一对一
-    # 正向：查询令狐冲的电话
-    # author = models.Author.objects.filter(name='令狐冲').first()
-    # res = author.au_detail.tel
-    # print(res,type(res))
+# 一对一
+# 正向：查询令狐冲的电话
+# author = models.Author.objects.filter(name='令狐冲').first()
+# res = author.au_detail.tel
+# print(res,type(res))
 
-    # 查询所有住址在黑木崖的作者的姓名。
-    # # 反向：一对一的反向，用 对象.小写类名 即可，不用加 _set。
-    # addr = models.AuthorDetail.objects.filter(addr='黑木崖').first()
-    # res = addr.author.name
-    # print(res, type(res))
-    # return HttpResponse('ok')
+# 查询所有住址在黑木崖的作者的姓名。
+# # 反向：一对一的反向，用 对象.小写类名 即可，不用加 _set。
+# addr = models.AuthorDetail.objects.filter(addr='黑木崖').first()
+# res = addr.author.name
+# print(res, type(res))
+# return HttpResponse('ok')
 
 # 多对多
-    # 正向:对象.属性(book.authors)可以跳转到关联的表(作者表)。
-    # book = models.Book.objects.filter(title='菜鸟教程').first()
-    # res = book.authors.all()
-    # for i in res:
-    #     print(i.name, i.au_detail.tel)
-    #
-    # # 反向：查询任我行出过的所有书籍的名字。
-    # author = models.Author.objects.filter(name='任我行').first()
-    # res = author.book_set.all()
-    # for i in res:
-    #     print(i.title)
-    # return HttpResponse('ok')
+# 正向:对象.属性(book.authors)可以跳转到关联的表(作者表)。
+# book = models.Book.objects.filter(title='菜鸟教程').first()
+# res = book.authors.all()
+# for i in res:
+#     print(i.name, i.au_detail.tel)
+#
+# # 反向：查询任我行出过的所有书籍的名字。
+# author = models.Author.objects.filter(name='任我行').first()
+# res = author.book_set.all()
+# for i in res:
+#     print(i.title)
+# return HttpResponse('ok')
 
 # =============================================================
 # 基于双下划线的跨表查询
@@ -275,26 +275,27 @@ def add_book(request):
     # res2 = models.Publish.objects.filter(name='华山出版社').values_list('book__title', 'book__price')
     # print(res1, type(res1), res2, type(res2))
 
-# 多对多：查询任我行出版过的所有图书
-# 正向：通过 属性名称__跨表的属性名称（authors__name）跨表获取数据
-#     res = models.Book.objects.filter(authors__name="任我行").values_list('tittle')
-# 反向：通过 小写类名__跨表的属性名称（book__tittle）跨表获取数据
-#     res = models.Author.objects.filter(name="任我行").values_list("book__title")
+    # 多对多：查询任我行出版过的所有图书
+    # 正向：通过 属性名称__跨表的属性名称（authors__name）跨表获取数据
+    #     res = models.Book.objects.filter(authors__name="任我行").values_list('tittle')
+    # 反向：通过 小写类名__跨表的属性名称（book__tittle）跨表获取数据
+    #     res = models.Author.objects.filter(name="任我行").values_list("book__title")
 
-# 一对一：查询任我行的手机号
-# 正向：通过 属性名称__跨表的属性名称（au_detail_tell）跨表获取数据。
+    # 一对一：查询任我行的手机号
+    # 正向：通过 属性名称__跨表的属性名称（au_detail_tell）跨表获取数据。
     res1 = models.Author.objects.filter(name='任我行').values_list("au_detail__tel")
-# 反向：通过小写类名__跨表的属性名称（author__name）跨表获取数据
+    # 反向：通过小写类名__跨表的属性名称（author__name）跨表获取数据
     res2 = models.AuthorDetail.objects.filter(author__name="任我行").values_list("tel")
     print(res1, res2)
     return HttpResponse('ok')
+
 
 def add_emp(request):
     if request.method == "GET":
         form = EmpForm()  # 初始化form对象
         return render(request, "add_emp.html", {"form": form})
     else:
-        form = EmpForm(request.POST)  #将数据传给form对象
+        form = EmpForm(request.POST)  # 将数据传给form对象
         if form.is_valid():  # 进行数据校验
             # 校验成功
             data = form.cleaned_data  # 校验成功的值，会放在cleaned_data里。
@@ -306,7 +307,23 @@ def add_emp(request):
             )
             # return render(request, "add_emp.html", {"form": form})
         else:  # 校验失败
-            print(form.errors)    # 打印错误信息
+            print(form.errors)  # 打印错误信息
             clean_errors = form.errors.get("__all__")  # 获取全局钩子错误信息
             print(222, clean_errors)
         return render(request, "add_emp.html", {"form": form, "clean_errors": clean_errors})
+
+
+from django.contrib import auth
+from django.contrib.auth.models import User
+
+
+def login(request):
+    if request.method == "GET":
+        return render(request, "login.html")
+    username = request.POST.get("username")
+    password = request.POST.get("pwd")
+    valid_num = request.POST.get("valid_num")
+    keep_str = request.session.get("keep_str")
+    if keep_str.upper() == valid_num.upper():
+        user_obj = auth.authenticate(username=username, password=password)
+        print(user_obj.username)

@@ -74,6 +74,7 @@ class AuthorDetail(models.Model):
     birthday = models.DateField()
 
 
+# 继承组件元素
 class EmpForm(forms.Form):
     # CharField相当于char
     name = forms.CharField(min_length=4, label="姓名", error_messages={"min_length": "你太短了", "required": "该字段不能为空!"})
